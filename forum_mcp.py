@@ -27,7 +27,14 @@ def search_forum(query: str, solved_only: bool = False,
     node behavior, or feature question — the community forum often has the
     answer when the docs don't. Set solved_only=True to return ONLY threads
     with an accepted answer (vetted solutions = best for verifying a fix).
-    Returns each thread's solved-status, title, category, link, and excerpt.
+
+    You can pass a full error string or a whole sentence — search adaptively
+    broadens to the most distinctive terms when an exact query is too narrow
+    (Discourse ANDs every word, so long queries otherwise match nothing), and
+    sorts solved threads first. For each solved hit it also returns a snippet
+    of the ACCEPTED ANSWER inline, so the vetted fix shows up in the result
+    itself. Returns solved-status, title, category, link, excerpt, and (for
+    solved threads) the accepted-answer snippet.
     """
     return fs._fmt_search(fs.search(query, solved_only=solved_only,
                                     max_results=max_results))

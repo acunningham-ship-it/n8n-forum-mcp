@@ -8,8 +8,12 @@ Read-only and anonymous — it only hits the public Discourse search/topic endpo
 
 ## Tools
 
-- **`search_forum(query, solved_only=False, max_results=8)`** — search the forum. Set `solved_only=True` to return only threads with an accepted answer (vetted solutions). Returns each thread's solved-status, title, category, link, and excerpt.
+- **`search_forum(query, solved_only=False, max_results=8)`** — search the forum. Set `solved_only=True` to return only threads with an accepted answer (vetted solutions). Returns each thread's solved-status, title, category, link, and excerpt — **plus, for solved threads, a snippet of the accepted answer inline** so the vetted fix shows up in the search itself.
 - **`get_thread(topic_id)`** — read a thread by id (from `search_forum`). Surfaces the accepted answer first, then the posts.
+
+### Adaptive recall
+
+Discourse search ANDs every term, so pasting a whole error message or a full sentence (`"OpenAI node messages must be a non-empty array got null despite having inputs"`) tends to match **nothing** — while the same intent as a few key terms (`"messages non-empty array"`) finds the solved threads. `search_forum` handles this for you: it runs the exact query first (precision), then progressively broadens to the most distinctive 4 → 3 → 2 terms **only if results are thin** (recall), merging solved threads to the top. So you can hand it a raw error string and still get hits.
 
 ## Install
 
