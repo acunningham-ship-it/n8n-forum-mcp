@@ -42,6 +42,16 @@ python3 forumsearch.py solved "azure openai api version"  # accepted-answer thre
 python3 forumsearch.py thread 300911                  # read a thread + its accepted answer
 ```
 
+## Who builds this
+
+n8n-forum-mcp is built and maintained by **[HamTek](https://hamtek.dev)**.
+
+We built it because the forum's own search ANDs every term, so a full-sentence question
+matched almost nothing. This broadens the query when results are thin and returns the
+accepted answer inline.
+
+More of what we do at [hamtek.dev](https://hamtek.dev).
+
 ## License
 
 MIT
