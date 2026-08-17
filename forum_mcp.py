@@ -5,17 +5,22 @@ Exposes the n8n community forum as MCP tools so it can be used as a
 verification source alongside the n8n Docs MCP — solved threads (accepted
 answers) are vetted community documentation. Read-only, anonymous.
 
-Run via the dedicated venv: ~/n8n_forum_bot/mcpvenv/bin/python forum_mcp.py
+Run via the venv created in the install steps: .venv/bin/python forum_mcp.py
 Registered in Claude Code as the `n8n-forum` MCP server (stdio).
 """
 import os
 import sys
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-from mcp.server.fastmcp import FastMCP  # noqa: E402
+try:
+    # mcp >= 2.0 renamed mcp.server.fastmcp -> mcp.server.mcpserver
+    # (FastMCP -> MCPServer). Same .tool()/.run() API, so either works.
+    from mcp.server.mcpserver import MCPServer as _Server  # noqa: E402
+except ImportError:  # mcp 1.x
+    from mcp.server.fastmcp import FastMCP as _Server  # noqa: E402
 import forumsearch as fs  # noqa: E402
 
-mcp = FastMCP("n8n-forum")
+mcp = _Server("n8n-forum")
 
 
 @mcp.tool()
